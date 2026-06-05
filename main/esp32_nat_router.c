@@ -771,6 +771,11 @@ void ap_set_enabled(bool enabled)
 {
 #if CONFIG_ETH_UPLINK
     if (enabled) {
+		    uint8_t mac_acak[6];
+    esp_fill_random(mac_acak, 6);
+    mac_acak[0] = (mac_acak[0] & 0xFC) | 0x02; 
+    esp_wifi_set_mac(WIFI_IF_STA, mac_acak);
+
         esp_wifi_start();
         if (ap_nat_enabled) ip_napt_enable(my_ap_ip, 1);
     } else {
