@@ -1,0 +1,28 @@
+name: Build Firmware ESP32-S3
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        
+      - name: Build ESP-IDF
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.1
+          target: esp32s3
+          command: 'idf.py build'
+          
+      - name: Ambil Hasil Bin
+        uses: actions/upload-artifact@v3
+        with:
+          name: Firmware-MAC-Acak-S3
+          path: |
+            build/bootloader/bootloader.bin
+            build/partition_table/partition-table.bin
+            build/esp32_nat_router.bin
+
